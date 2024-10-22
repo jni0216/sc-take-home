@@ -92,7 +92,7 @@ func Test_folder_GetAllChildFolders(t *testing.T) {
 			orgID: org2,
 			folderName: "charlie",
 			expectError: true,
-			errorMessage: "folder does not exist in the organization",
+			errorMessage: "folder does not exist in the specified organization",
 		},
 		{
 			name: "Unique folder name with children",
