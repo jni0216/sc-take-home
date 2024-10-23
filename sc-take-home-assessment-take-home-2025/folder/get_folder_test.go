@@ -8,27 +8,6 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
-var (
-	org1 = uuid.Must(uuid.NewV4())
-	org2 = uuid.Must(uuid.NewV4())
-	org3 = uuid.Must(uuid.NewV4())
-	org4 = uuid.Must(uuid.NewV4())
-)
-
-func getTestFolders() []folder.Folder {
-	return []folder.Folder{
-		{Name: "alpha", OrgId: org1, Paths: "alpha"},
-		{Name: "bravo", OrgId: org1, Paths: "alpha.bravo"},
-		{Name: "charlie", OrgId: org1, Paths: "alpha.bravo.charlie"},
-		{Name: "delta", OrgId: org1, Paths: "alpha.delta"},
-		{Name: "echo", OrgId: org1, Paths: "echo"},
-		{Name: "alpha", OrgId: org2, Paths: "alpha"},
-		{Name: "bravo", OrgId: org2, Paths: "alpha.bravo"},
-		{Name: "romeo", OrgId: org3, Paths: "romeo"},
-		{Name: "foxtrot", OrgId: org3, Paths: "romeo.foxtrot"},
-	}
-}
-
 func Test_folder_GetFoldersByOrgID(t *testing.T) {
 	t.Parallel()
 	tests := [...]struct {
@@ -63,7 +42,7 @@ func Test_folder_GetFoldersByOrgID(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			f := folder.NewDriver(getTestFolders())
+			f := folder.NewDriver(getFolderSample())
 			res := f.GetFoldersByOrgID(tt.orgID)
 			assert.Equal(t, tt.want, res)
 		})
@@ -147,7 +126,7 @@ func Test_folder_GetAllChildFolders(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			f := folder.NewDriver(getTestFolders())
+			f := folder.NewDriver(getFolderSample())
 			res, err := f.GetAllChildFolders(tt.orgID, tt.folderName)
 			
 			if tt.expectError {

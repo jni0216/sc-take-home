@@ -25,35 +25,40 @@ func (f *driver) GetFoldersByOrgID(orgID uuid.UUID) []Folder {
 }
 
 // Approach and reasoning
-// The code readability is prioritized over a one pass solution for the use case.
+//
+// The code readability is prioritized over a one pass or two pass approach.
 // Using GetFoldersByOrgID over f.orgId = orgID adheres to many good coding principles (DRY, SRP, etc).
+// A more general approach is used that will work even if order of folder array input is changed.
+//
+// Unaccounted for edge cases missing in specification
+//
+// Same folder name in same organization at different height are technically different folders.
+//
 func (f *driver) GetAllChildFolders(orgID uuid.UUID, name string) ([]Folder, error) {
 	folders := f.folders
 
-	// Flags check if folder exists in All Folders and Org. If exists in Org, save the folder
-	var foundFolderInAll bool
-	var foundFolderInOrg bool
+	// A flag checks for folder in all folders. If also in correct organization, save the folder
+	var folderInAll bool
 	var parentFolder *Folder
 
-	for _, f := range folders {
-		if f.Name == name {
-			foundFolderInAll = true
-			if f.OrgId == orgID {
-				foundFolderInOrg = true
-				parentFolder = &f
+	for i := range folders {
+		if folders[i].Name == name {
+			folderInAll = true
+			if folders[i].OrgId == orgID {
+				parentFolder = &folders[i]
 				break
 			}
 		}
 	}
 
-	if !foundFolderInAll {
+	if !folderInAll {
 		return nil, errors.New("folder does not exist")
 	}
-	if !foundFolderInOrg {
+	if parentFolder == nil {
 		return nil, errors.New("folder does not exist in the specified organization")
 	}
 
-	// Prefix match/find for all child folders for our parent folder in the organization
+	// If any folder prefix matches our parent folder, it is a subfolder/child of our parent folder
 	prefix := parentFolder.Paths + "."
 	childFolders := []Folder{}
 	orgFolders := f.GetFoldersByOrgID(orgID)
