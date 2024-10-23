@@ -5,7 +5,6 @@ import (
 	"github.com/gofrs/uuid"
 )
 
-// Test startup code for use across multiple tests
 var (
 	org1 = uuid.Must(uuid.NewV4())
 	org2 = uuid.Must(uuid.NewV4())
@@ -13,8 +12,8 @@ var (
 	org4 = uuid.Must(uuid.NewV4())
 )
 
-// Test startup code for use across multiple tests
-func moveFolderSample() []folder.Folder {
+// Test startup dataset containing 2 organizations and no duplicate folder names
+func noSameFolderNameSample() []folder.Folder {
 	return []folder.Folder{
 		{Name: "alpha", OrgId: org1, Paths: "alpha"},
 		{Name: "bravo", OrgId: org1, Paths: "alpha.bravo"},
@@ -26,8 +25,8 @@ func moveFolderSample() []folder.Folder {
 	}
 }
 
-// Test startup code for use across multiple tests
-func getFolderSample() []folder.Folder {
+// Test startup dataset containing 3 organizations and some duplicate folder names across organizations
+func mixedFolderNameSample() []folder.Folder {
 	return []folder.Folder{
 		{Name: "alpha", OrgId: org1, Paths: "alpha"},
 		{Name: "bravo", OrgId: org1, Paths: "alpha.bravo"},
