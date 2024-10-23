@@ -10,6 +10,8 @@ import (
 // We will take a faster implementation using 2 passes to implement move folder
 // due to typically requiring fast desired behaviour when moving things.
 //
+// Edit in constant space like real world move folder behaviour without making a copy.
+//
 // Unaccounted for edge cases missing in specification
 //
 // No way to differentiate if folders have the same name in different locations.
