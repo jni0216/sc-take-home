@@ -42,7 +42,7 @@ func Test_folder_GetFoldersByOrgID(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			f := folder.NewDriver(getFolderSample())
+			f := folder.NewDriver(mixedFolderNameSample())
 			res := f.GetFoldersByOrgID(tt.orgID)
 			assert.Equal(t, tt.want, res)
 		})
@@ -126,7 +126,7 @@ func Test_folder_GetAllChildFolders(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			f := folder.NewDriver(getFolderSample())
+			f := folder.NewDriver(mixedFolderNameSample())
 			res, err := f.GetAllChildFolders(tt.orgID, tt.folderName)
 			
 			if tt.expectError {
